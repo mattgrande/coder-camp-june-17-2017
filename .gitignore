@@ -1,0 +1,3 @@
+node_modules
+# This is a bad idea, but idgaf, it's a distraction for a tiny repo
+yarn.lock
