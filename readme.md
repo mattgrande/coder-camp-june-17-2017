@@ -12,6 +12,9 @@ These are my crib notes for the talk I'm giving at Hamilton's CoderCamp, June 14
     * Automatic currying
     * Function composition
     * Immutability
+* All internal code is ES3-compliant (works back to IE6)
+* No dependencies! https://github.com/ramda/ramda/blob/master/package.json#L55
+* So, let's talk about currying...
 
 ## Ex 0 (Rogers)
 
@@ -75,7 +78,7 @@ if (!Boolean(error)) {
 10.  [R.isNil, R.always(500)],
      [R.is(ErrorWithStatus), R.prop('status')],
      [R.is(ValidationError), R.always(400)],
-     [R.propEq('type', 'PaymentNotIncluded', R.always(402)],
+     [R.propEq('type', 'PaymentNotIncluded'), R.always(402)],
      [R.test(/not found/i), R.always(404)],
      [R.always(true), R.always(500)]
 11. Now, get rid of the error from the function:
