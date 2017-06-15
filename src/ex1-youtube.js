@@ -1,13 +1,8 @@
-function getViews(youtubeVideos) {
-    var results = [];
+const R = require('ramda');
 
-    for (var i = 0; i < youtubeVideos.length; i++) {
-        if ('views' in youtubeVideos[i]) {
-            results.push(youtubeVideos[i].views);
-        }
-    }
-
-    return results;
-}
+const getViews = R.pipe(
+    R.filter(R.has('views')),
+    R.map(v => v.views)
+);
 
 module.exports.getViews = getViews;

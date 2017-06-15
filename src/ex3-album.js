@@ -1,40 +1,16 @@
-function setArtist(artistName, album) {
-  var newAlbum = shallowClone(album);
-  var newArtist = shallowClone(album.artist);
+const R = require('ramda');
 
-  newArtist.name = artistName;
+const artistLens = R.lensProp('artist');
+const nameLens = R.lensProp('name');
+const artistNameLens = R.compose(artistLens, nameLens);
 
-  newAlbum.artist = newArtist;
-
-  return newAlbum;
-}
+const setArtist = R.set(artistNameLens);
 
 function addMetadata(metadata, album) {
-  var newAlbum = shallowClone(album);
-  var newArtist = shallowClone(newAlbum.artist);
-
-  newAlbum.artist = newArtist;
-
-  for (var metadataKey in metadata) {
-    newAlbum.artist[metadataKey] = metadata[metadataKey];
-  }
-
-  return newAlbum;
+  return R.over(artistLens, R.merge(metadata), album);
 }
 
-function getArtist(album) {
-  return album.artist.name;
-}
-
-function shallowClone(album) {
-  var result = {};
-
-  for (var someKey in album) {
-    result[someKey] = album[someKey];
-  }
-
-  return result;
-}
+const getArtist = R.view(artistNameLens);
 
 module.exports = {
   setArtist: setArtist,

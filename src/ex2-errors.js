@@ -1,23 +1,13 @@
-function errorToStatusCode(error) {
-    if (error && error.constructor) {
-        if (error.constructor === ErrorWithStatus) {
-            return error.status;
-        }
-        else if (error.constructor === ValidationError) {
-            return 400;
-        }
-    }
+const R = require('ramda');
 
-    if (error && error.type && error.type === 'PaymentNotIncluded') {
-        return 402;
-    }
-    else if (typeof error === 'string' && /not found/i.test(error)) {
-        return 404;
-    }
-    else {
-        return 500;
-    }
-}
+const errorToStatusCode = R.cond([
+    [R.isNil, R.always(500)],
+    [R.is(ErrorWithStatus), R.prop('status')],
+    [R.is(ValidationError), R.always(400)],
+    [R.propEq('type', 'PaymentNotIncluded'), R.always(402)],
+    [R.test(/not found/i), R.always(404)],
+    [R.always(true), R.always(500)]
+]);
 
 module.exports.errorToStatusCode = errorToStatusCode;
 
